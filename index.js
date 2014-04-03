@@ -1,11 +1,19 @@
-var request = require('request'),
+var _request = require('request'),
     cheerio = require('cheerio');
+
+exports.config = function(options) {
+    this.request = _request.defaults(options);
+}
 
 exports.beerSearch = function(query, callback) {
 
     var url = "http://beeradvocate.com/search/?q=" + encodeURIComponent(query) + "&qt=beer";
 
-    request(url, function (error, response, html) {
+    if (!this.request) {
+        this.request = _request;
+    }
+
+    this.request(url, function (error, response, html) {
 
         if (!error && response.statusCode == 200) {
 
@@ -62,7 +70,11 @@ exports.beerPage = function(url, callback) {
 
     var url = "http://beeradvocate.com" + url;
 
-    request(url, function (error, response, html) {
+    if (!this.request) {
+        this.request = _request;
+    }
+
+    this.request(url, function (error, response, html) {
 
         if (!error && response.statusCode == 200) {
 
@@ -157,9 +169,13 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 		max_review_count = null;
 	
 	// Create recursive review populator
+        if (!this.request) {
+            this.request = _request;
+        }
+	var self = this;
 	var populate_reviews = function(url){
 	
-		request(url, function (error, response, html) {
+		self.request(url, function (error, response, html) {
 
 			if (!error && response.statusCode == 200) {
 
@@ -167,11 +183,11 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 				
 				// Get the total number of reviews if it's not known
 				if(!max_review_count){					
-					var tc = $('#rating_fullview').parent().contents(),
-					max_review_count = tc[2].data
-										.split('&nbsp;|&nbsp;')[1]
-										.split(':')[1]
-										.trim();
+					var tc = $($('#baContent').contents()[11]).text();
+					max_review_count = tc
+						.split('|')[1]
+						.split(':')[1]
+						.trim()
 				}
 
 				$('#rating_fullview_content_2').each(function() {
