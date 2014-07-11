@@ -291,3 +291,57 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 	populate_reviews(base_url + start_index);
 	
 }
+
+exports.breweryPage = function(url, callback) {
+
+    var url = "http://beeradvocate.com" + url;
+
+    if (!this.request) {
+        this.request = _request;
+    }
+
+    this.request(url, function (error, response, html) {
+
+        if (!error && response.statusCode == 200) {
+
+            var $ = cheerio.load(html);
+
+            var brewery = [];
+
+            // Beer & brewery name
+            var brewery_name = $('h1').text();
+
+            // Brewery details
+            var links = $('#baContent table').find('form').parent().find('a'),
+                brewery_state = links.eq(2).text(),
+                brewery_country = links.eq(3).text(),
+                beer_style = links.eq(4).text();
+
+            // Beer Advocate scores
+            var ba_info = $('.BAscore_big').eq(0),
+                ba_score = ba_info.text(),
+                ba_rating = ba_info.next().next().text();
+
+            var beer_stats = $('#baContent table').eq(0).find('td').eq(0).text().split(/:\s/),
+                beer_ratings = beer_stats[2].replace("Beer Avg",""),
+                beer_rating_average = beer_stats[3].replace("Taps","");
+
+            // Data to return
+            var data = {
+                brewery_name: brewery_name,
+                ba_score: ba_score,
+                ba_rating: ba_rating,
+                beer_ratings: beer_ratings,
+                beer_rating_average: beer_rating_average
+            };
+
+            // Add to beer array
+            brewery.push(data);
+
+            callback(brewery);
+
+        }
+
+    });
+
+}

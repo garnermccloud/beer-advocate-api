@@ -41,7 +41,6 @@ ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
 
 });
 
-// TODO Not yet implemented
 // Get a specific brewery page
 // http://www.beeradvocate.com/beer/profile/2137/
 ba.breweryPage("/beer/profile/2137/", function(brewery) {
@@ -105,15 +104,12 @@ ba.breweryPage("/beer/profile/2137/", function(brewery) {
     date: '11-28-2012 04:40:39'
 }]
 
-// TODO Not yet implemented
 // Get a specific brewery page
-[{
-    brewery_name: 'Indeed Brewering Company',
-    brewery_score: 93,
-    brewery_ratings: 56,
-    beer_ratings: 1700,
-    beer_rating_average: 3.82
-}]
+[ { brewery_name: 'Indeed Brewing Company',
+    ba_score: '93',
+    ba_rating: 'outstanding',
+    beer_ratings: '1,700',
+    beer_rating_average: '3.82' } ]
 
 ```
 

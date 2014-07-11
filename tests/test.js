@@ -19,3 +19,9 @@ ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
     console.log(reviews);
     console.log("========%s=======", "beerTopReviews");
 });
+
+ba.breweryPage("/beer/profile/29223/", function(brewery) {
+    console.log("========%s=======", "breweryPage");
+    console.log(brewery);
+    console.log("========%s=======", "breweryPage");
+});
