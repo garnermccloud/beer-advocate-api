@@ -41,6 +41,13 @@ ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
 
 });
 
+// Search for a brewery
+// http://beeradvocate.com/search/?q=Indeed+Brewing+Company&qt=beer
+ba.beerSearch("Indeed Brewing Company", function(brewery) {
+
+    console.log(brewery);
+
+});
 // Get a specific brewery page
 // http://www.beeradvocate.com/beer/profile/2137/
 ba.breweryPage("/beer/profile/2137/", function(brewery) {
@@ -103,6 +110,11 @@ ba.breweryPage("/beer/profile/2137/", function(brewery) {
     serving_type: 'can',
     date: '11-28-2012 04:40:39'
 }]
+
+// Search for a brewery
+[ { brewery_name: 'Indeed Brewing Company',
+    brewery_url: '/beer/profile/29223/',
+    brewery_location: 'Minneapolis, Minnesota' } ]
 
 // Get a specific brewery page
 [ { brewery_name: 'Indeed Brewing Company',

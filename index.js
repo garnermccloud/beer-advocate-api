@@ -292,6 +292,54 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 	
 }
 
+exports.brewerySearch = function(query, callback) {
+
+    var url = "http://beeradvocate.com/search/?q=" + encodeURIComponent(query) + "&qt=place";
+
+    if (!this.request) {
+        this.request = _request;
+    }
+
+    this.request(url, function (error, response, html) {
+
+        if (!error && response.statusCode == 200) {
+
+            var $ = cheerio.load(html);
+
+            var breweries = [];
+
+            $('#baContent ul li').each(function(brewery) {
+
+                // One beer listing
+                var li = $(this);
+
+                // Beer details
+                var brewery = li.children('a').eq(0),
+                    brewery_name = brewery.text(),
+                    brewery_url = brewery.attr('href'),
+                    brewery_location = li.find('span').text();
+
+
+                // Data to return
+                var data = {
+                    brewery_name: brewery_name,
+                    brewery_url: brewery_url,
+                    brewery_location: brewery_location
+                };
+
+                // Add to beer array
+                breweries.push(data);
+
+            });
+
+            callback(breweries);
+
+        }
+
+    });
+
+}
+
 exports.breweryPage = function(url, callback) {
 
     var url = "http://beeradvocate.com" + url;
