@@ -186,8 +186,11 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 					var tc = $($('#baContent').contents()[11]).text();
 					max_review_count = tc
 						.split('|')[1]
-						.split(':')[1]
-						.trim()
+						.split(':')[1];
+					
+					if(max_review_count){
+						max_review_count = max_review_count.trim()
+					}
 				}
 
 				$('#rating_fullview_content_2').each(function() {
