@@ -19,3 +19,15 @@ ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
     console.log(reviews);
     console.log("========%s=======", "beerTopReviews");
 });
+
+ba.brewerySearch("Indeed Brewing Company", function(brewery) {
+    console.log("========%s=======", "brewerySearch");
+    console.log(brewery);
+    console.log("========%s=======", "brewerySearch");
+});
+
+ba.breweryPage("/beer/profile/29223/", function(brewery) {
+    console.log("========%s=======", "breweryPage");
+    console.log(brewery);
+    console.log("========%s=======", "breweryPage");
+});
