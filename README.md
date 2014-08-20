@@ -6,7 +6,7 @@ Beer Advocate API is an unofficial JavaScript library for working with http://be
 Getting started
 ---------------
 
-Beer Advocate API can be installed via [NPM](https://www.npmjs.org/). (For more on NPM, see thin [introduction](http://howtonode.org/05896bb828f0d7e9251dd5b4cfd72350896990bd/introduction-to-npm)). Make sure you’re in your projects directory, and run the following:
+Beer Advocate API can be installed via [NPM](https://www.npmjs.org/). (For more on NPM, see this [introduction](http://howtonode.org/05896bb828f0d7e9251dd5b4cfd72350896990bd/introduction-to-npm)). Make sure you’re in your projects directory, and run the following:
 
 ```bash
 $ npm install beer-advocate-api
