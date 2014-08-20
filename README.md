@@ -145,9 +145,8 @@ Example response
 ]
 ```
 
-
 Breweries
-=========
+---------
 
 ### Search
 
