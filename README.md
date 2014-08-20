@@ -1,134 +1,221 @@
-# Beer Advocate API
+Beer Advocate API
+=================
 
-Unofficial library for working with Beer Advocate data.
+Beer Advocate API is an unofficial JavaScript library for working with http://beeradvocate.com data.
 
-## Installation
+Getting started
+---------------
 
-#### via [NPM](http://npmjs.org)
+Beer Advocate API can be installed via [NPM](https://www.npmjs.org/). (For more on NPM, see thin [introduction](http://howtonode.org/05896bb828f0d7e9251dd5b4cfd72350896990bd/introduction-to-npm)). Make sure you’re in your projects directory, and run the following:
 
 ```bash
-$ npm install beer-advocate-api --save-dev
+$ npm install beer-advocate-api
 ```
 
-## Example
+Including the library
+---------------------
+
+Next, make sure to include Beer Advocate API in your project.
 
 ```javascript
 var ba = require('beer-advocate-api');
-
-// Search for a beer
-// http://beeradvocate.com/search/?q=Anchor+Steam&qt=beer
-ba.beerSearch("Anchor Steam", function(beers) {
-
-    console.log(beers);
-
-});
-
-// Get a specific beer page
-// http://beeradvocate.com/beer/profile/29223/84343/
-ba.beerPage("/beer/profile/29223/84343/", function(beer) {
-
-    console.log(beer);
-
-});
-
-// Get a specific beer's reviews from top reviewers
-// http://beeradvocate.com/beer/profile/29223/84343/?view=beer&sort=topr&start=0
-ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
-
-    console.log(reviews);
-
-});
-
-// Search for a brewery
-// http://beeradvocate.com/search/?q=Indeed+Brewing+Company&qt=beer
-ba.beerSearch("Indeed Brewing Company", function(brewery) {
-
-    console.log(brewery);
-
-});
-// Get a specific brewery page
-// http://www.beeradvocate.com/beer/profile/2137/
-ba.breweryPage("/beer/profile/2137/", function(brewery) {
-
-    console.log(brewery);
-
-});
 ```
-## Output
+
+Documentation
+=============
+
+See the online [docs](http://stursby.github.io/beer-advocate-api) here.
+
+Beers
+-----
+
+### Search
+
+Search for a beer
 
 ```javascript
-// Search for a beer
-[ { beer_name: 'Anchor Steam Beer',
-    beer_url: '/beer/profile/28/63/',
-    brewery_name: 'Anchor Brewing Company',
-    brewery_location: 'San Francisco, California',
-    brewery_url: '/beer/profile/28/',
-    retired: false },
-  { beer_name: 'Drop Anchor Steam Beer',
-    beer_url: '/beer/profile/952/9899/',
-    brewery_name: 'Great Dane Pub & Brewing Company (Downtown)',
-    brewery_location: 'Madison, Wisconsin',
-    brewery_url: '/beer/profile/952/',
-    retired: true } ]
+ba.beerSearch("Anchor Steam", function(beers) {
+    console.log(beers);
+});
+```
 
-// Get a specific beer page
-[ { beer_name: 'Day Tripper',
-    beer_style: 'American Pale Ale (APA)',
-    beer_abv: '5.40%',
-    brewery_name: 'Indeed Brewing Company',
-    brewery_state: 'Minnesota',
-    brewery_country: 'United States',
-    ba_score: '90',
-    ba_rating: 'outstanding',
-    bros_score: 'N/A',
-    bros_rating: '',
-    ratings: '264',
-    reviews: '65',
-    rAvg: '4.04',
-    pDev: '10.4%' } ]
-	
-// Get a specific beer's reviews from top reviewers
-[{
-    reviewer: 'Sammy',
-    reviewer_url: '/community/members/sammy.3853/',
-    rating: '3.95',
-    rating_max: '5',
-    attributes: {
-        look: '4',
-        smell: '4',
-        taste: '4',
-        feel: '3.5',
-        overall: '4'
+Example response
+
+```json
+[
+    {
+        "beer_name": "Anchor Steam Beer",
+        "beer_url": "/beer/profile/28/63/",
+        "brewery_name": "Anchor Brewing Company",
+        "brewery_location": "San Francisco, California",
+        "brewery_url": "/beer/profile/28/",
+        "retired": false
     },
-    review_text: 'Very fresh and good can obtained by John. Citrus hop aroma, 
-				yet well tamed. Cloudy orange and lacey. A big IBU and yet a 
-				very good ornage, tangerine, grapefruit taste and drinkability. 
-				A good examle of a pale that used tobe called an IPA(if not a 
-				DIPA by some) .Recommended.',
-    serving_type: 'can',
-    date: '11-28-2012 04:40:39'
-}]
-
-// Search for a brewery
-[ { brewery_name: 'Indeed Brewing Company',
-    brewery_url: '/beer/profile/29223/',
-    brewery_location: 'Minneapolis, Minnesota' } ]
-
-// Get a specific brewery page
-[ { brewery_name: 'Indeed Brewing Company',
-    ba_score: '93',
-    ba_rating: 'outstanding',
-    beer_ratings: '1,700',
-    beer_rating_average: '3.82' } ]
-
+    {
+        "beer_name": "Drop Anchor Steam Beer",
+        "beer_url": "/beer/profile/952/9899/",
+        "brewery_name": "Great Dane Pub & Brewing Company (Downtown)",
+        "brewery_location": "Madison, Wisconsin",
+        "brewery_url": "/beer/profile/952/",
+        "retired": true
+    },
+    {
+        "beer_name": "Anchor's Away Steam Beer",
+        "beer_url": "/beer/profile/1313/23018/",
+        "brewery_name": "Lucky Labrador Brewing Company",
+        "brewery_location": "Portland, Oregon",
+        "brewery_url": "/beer/profile/1313/",
+        "retired": true
+    },
+    {
+        "beer_name": "Dry Hopped Steam Beer",
+        "beer_url": "/beer/profile/28/129664/",
+        "brewery_name": "Anchor Brewing Company",
+        "brewery_location": "San Francisco, California",
+        "brewery_url": "/beer/profile/28/",
+        "retired": false
+    }
+]
 ```
 
 
+### Beer page
 
-## License
+Get a specific beer page
 
-Beer Advocate API is licensed [MIT](http://opensource.org/licenses/MIT)
+```javascript
+ba.beerPage("/beer/profile/29223/84343/", function(beer) {
+    console.log(beer);
+});
+```
 
-* * *
+Example response
 
-Copyright (c) 2014 Charlie Hield
+```json
+[
+    {
+        "beer_name": "Furious",
+        "beer_style": "",
+        "beer_abv": "6.20%",
+        "brewery_name": "Surly Brewing Company",
+        "brewery_state": "",
+        "brewery_country": "",
+        "ba_score": "96",
+        "ba_rating": "world-class",
+        "bros_score": "-",
+        "bros_rating": "no score",
+        "ratings": "4,021",
+        "reviews": "1,379",
+        "rAvg": "4.33",
+        "pDev": "9.24%"
+    }
+]
+```
+
+### Top reviews
+
+Get a specific beer’s reviews from top reviewers
+
+```javascript
+ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
+    console.log(reviews);
+});
+```
+
+Example response
+
+```json
+[
+    {
+        "reviewer": "Sammy",
+        "reviewer_url": "/community/members/sammy.3853/",
+        "rating": "3.95",
+        "rating_max": "5",
+        "attributes": {
+            "look": "4",
+            "smell": "4",
+            "taste": "4",
+            "feel": "3.5",
+            "overall": "4"
+        },
+        "review_text": "Very fresh and good can obtained by John. Citrus hop aroma, yet well tamed. Cloudy orange and lacey. A big IBU and yet a very good ornage, tangerine, grapefruit taste and drinkability. A good examle of a pale that used tobe called an IPA(if not a DIPA by some) .Recommended.",
+        "serving_type": "can",
+        "date": "11-28-2012 04:40:39"
+    }
+]
+```
+
+
+Breweries
+=========
+
+### Search
+
+Search for a brewery
+
+```javascript
+ba.brewerySearch("Big Sky Brewing Company", function(brewery) {
+    console.log(brewery);
+});
+```
+
+Example response
+
+```json
+[
+    {
+        "brewery_name": "Big Sky Brewing Company",
+        "brewery_url": "/beer/profile/751/",
+        "brewery_location": "Missoula, Montana"
+    }
+]
+``
+
+
+### Brewery page
+
+Get a specific brewery page
+
+```javascript
+ba.breweryPage("/beer/profile/2137/", function(brewery) {
+    console.log(brewery);
+});
+```
+
+Example response
+
+```json
+[
+    {
+        "brewery_name": "Big Sky Brewing Company",
+        "brewery_rating": {
+            "score": "94",
+            "text": "outstanding",
+            "count": "20",
+            "reviews": "4",
+            "rAvg": "4.3",
+            "pDev": "9.53%"
+        },
+        "active_beers": "35",
+        "beer_ratings": "6,837",
+        "beer_avg": "3.73",
+        "taps": "0",
+        "bottles": "0",
+        "cask": false,
+        "beer_to_go": true
+    }
+]
+```
+
+Acknowledgements
+----------------
+
+Beer Advocate API is not associated with the Beer Advocate or it’s magazine. We’re fans. And love what they do.
+
+**Beer Advocate API** is authored and maintained by [Charlie Hield](https://twitter.com/charliehield) with help from its contributors:
+
+ * [Kevin Schaul](https://github.com/kevinschaul)
+ * [Aaron Bieber](https://github.com/qbit)
+ * [Len Boyette](https://github.com/kevlened)
+
+© 2014, Charlie Hield under the [MIT License](http://www.opensource.org/licenses/mit-license.php).

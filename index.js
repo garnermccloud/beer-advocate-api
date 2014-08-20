@@ -108,11 +108,10 @@ exports.beerPage = function(url, callback) {
 
             // More stats
             var stats = $('#baContent table').eq(2).find('td:last-child').text().split(/:\s/),
-                ratings = stats[1].replace("Reviews",""),
+                ratings = stats[1].replace("\nReviews",""),
                 reviews = stats[2].replace("rAvg",""),
-                rAvg = stats[3].replace("\npDev",""),
-                pDev = stats[4].replace("\n\nRatings Help\n","");
-
+                rAvg = stats[3].replace("\n\npDev",""),
+                pDev = stats[4].replace("\nWants","");
 
             // Data to return
             var data = {
@@ -145,154 +144,160 @@ exports.beerPage = function(url, callback) {
 
 exports.beerTopReviews = function(beer_url, count, callback) {
 
-	// Optional count criteria
-	// -1 : All the reviews
-	// n  : Returns up to n reviews (no error is thrown if n is not met)
+    // Optional count criteria
+    // -1 : All the reviews
+    // n  : Returns up to n reviews (no error is thrown if n is not met)
 
-	if(arguments.length == 2){
-	
-		// Count holds the callback
-		callback = count;
-		
-		// Make the default count 25
-		count = 25;
-	}
-	
-	// Replace any -1 with the max
-	if(count == -1){
-		count = Number.MAX_VALUE;
-	}
+    if(arguments.length == 2){
+    
+        // Count holds the callback
+        callback = count;
+        
+        // Make the default count 25
+        count = 25;
+    }
+    
+    // Replace any -1 with the max
+    if(count == -1){
+        count = Number.MAX_VALUE;
+    }
 
     var base_url = "http://beeradvocate.com" + beer_url + "?sort=topr&start=",
-		start_index = 0,
-		reviews = [],
-		max_review_count = null;
-	
-	// Create recursive review populator
+        start_index = 0,
+        reviews = [],
+        max_review_count = null;
+    
+    // Create recursive review populator
         if (!this.request) {
             this.request = _request;
         }
-	var self = this;
-	var populate_reviews = function(url){
-	
-		self.request(url, function (error, response, html) {
+    var self = this;
+    var populate_reviews = function(url){
+    
+        self.request(url, function (error, response, html) {
 
-			if (!error && response.statusCode == 200) {
+            if (!error && response.statusCode == 200) {
 
-				var $ = cheerio.load(html);
-				
-				// Get the total number of reviews if it's not known
-				if(!max_review_count){					
-					var tc = $($('#baContent').contents()[11]).text();
-					max_review_count = tc
-						.split('|')[1]
-						.split(':')[1];
-					
-					if(max_review_count){
-						max_review_count = max_review_count.trim()
-					}
-				}
+                var $ = cheerio.load(html);
+                
+                // Get the total number of reviews if it's not known
+                if(!max_review_count){                  
+                    var tc = $($('#baContent').contents()[11]).text();
+                    max_review_count = tc
+                        .split('|')[1]
+                        .split(':')[1];
+                    
+                    if(max_review_count){
+                        max_review_count = max_review_count.trim()
+                    }
+                }
 
-				$('#rating_fullview_content_2').each(function() {
+                $('#rating_fullview_content_2').each(function() {
 
-					// One review listing
-					var li = $(this);
+                    // One review listing
+                    var li = $(this);
 
-					// Reviewer details
-					var reviewer_link = li.find('.username').eq(0),
-						reviewer = reviewer_link.text(),
-						reviewer_url = reviewer_link.attr('href');
+                    // Reviewer details
+                    var reviewer_link = li.find('.username').eq(0),
+                        reviewer = reviewer_link.text(),
+                        reviewer_url = reviewer_link.attr('href');
 
-					// Review score
-					var rating = li.children('.BAscore_norm').eq(0).text();
-					
-					// Review score total
-					var rating_max_el = li.children('.rAvg_norm'),
-						rating_max = rating_max_el.eq(0).text().replace('/','');
-					
-					// Get all the text only nodes
-					var text_nodes = [];
-					li.contents().each(function(){
-					
-						if(this[0].type === 'text'){
-							text_nodes.push(this[0]);
-						}
-						
-					});
-					
-					// Rating attributes
-					var attribute_split = text_nodes[2].data.split('|');
-					if(attribute_split.length == 5){
-					
-						attributes = {
-							look: attribute_split[0].split(':')[1].trim(),
-							smell: attribute_split[1].split(':')[1].trim(),
-							taste: attribute_split[2].split(':')[1].trim(),
-							feel: attribute_split[3].split(':')[1].trim(),
-							overall: attribute_split[4].split(':')[1].trim()
-						}
-						
-					};
-						
-					// Serving type
-					var serving_type = text_nodes[text_nodes.length-2].data.split(':')[1];
-					if(serving_type){
-						serving_type = serving_type.trim();
-					}
-					
-					// Date
-					var date = text_nodes[text_nodes.length-1].data.replace('&nbsp|&nbsp;',''),
-						
-					// Review text				
-					review_text_arr = text_nodes.slice(3, text_nodes.length - 2);
-					
-					// Replace the dom objects with text
-					for(var i=review_text_arr.length; i--;){
-						review_text_arr[i] = review_text_arr[i].data;
-					};
-					
-					// Join the text
-					review_text = review_text_arr.join('\n');
-					
-					// Data to return
-					var data = {
-						reviewer: reviewer,
-						reviewer_url: reviewer_url,
-						rating: rating,
-						rating_max: rating_max,
-						attributes: attributes,
-						review_text: review_text,
-						serving_type: serving_type,
-						date: date
-					};
-					
-					// Add to reviews array
-					reviews.push(data);
-				});			
-				
-				if(reviews.length < count && reviews.length < max_review_count){
-				
-					populate_reviews(base_url + reviews.length);
-					
-				}
-				else{
-				
-					reviews = reviews.splice(0, count);
-					callback(JSON.stringify(reviews));
-					
-				}
-			}
-			else{
-			
-				callback(JSON.stringify(error));
-				
-			}
-		});
-	};
-	
-	// Start recursion
-	populate_reviews(base_url + start_index);
-	
+                    // Review score
+                    var rating = li.children('.BAscore_norm').eq(0).text();
+                    
+                    // Review score total
+                    var rating_max_el = li.children('.rAvg_norm'),
+                        rating_max = rating_max_el.eq(0).text().replace('/','');
+                    
+                    // Get all the text only nodes
+                    var text_nodes = [];
+                    li.contents().each(function(){
+                    
+                        if(this[0].type === 'text'){
+                            text_nodes.push(this[0]);
+                        }
+                        
+                    });
+                    
+                    // Rating attributes
+                    var attribute_split = text_nodes[2].data.split('|');
+
+                    if(attribute_split.length == 5){
+                    
+                        attributes = {
+                            look: attribute_split[0].split(':')[1].trim(),
+                            smell: attribute_split[1].split(':')[1].trim(),
+                            taste: attribute_split[2].split(':')[1].trim(),
+                            feel: attribute_split[3].split(':')[1].trim(),
+                            overall: attribute_split[4].split(':')[1].trim()
+                        }
+                        
+                    } else {
+
+                        // TODO fix attributes
+                        attributes = null;
+
+                    }
+                        
+                    // Serving type
+                    var serving_type = text_nodes[text_nodes.length-2].data.split(':')[1];
+                    if(serving_type){
+                        serving_type = serving_type.trim();
+                    }
+                    
+                    // Date
+                    var date = text_nodes[text_nodes.length-1].data.replace('&nbsp|&nbsp;',''),
+                        
+                    // Review text              
+                    review_text_arr = text_nodes.slice(3, text_nodes.length - 2);
+                    
+                    // Replace the dom objects with text
+                    for(var i=review_text_arr.length; i--;){
+                        review_text_arr[i] = review_text_arr[i].data;
+                    };
+                    
+                    // Join the text
+                    review_text = review_text_arr.join('\n');
+                    
+                    // Data to return
+                    var data = {
+                        reviewer: reviewer,
+                        reviewer_url: reviewer_url,
+                        rating: rating,
+                        rating_max: rating_max,
+                        attributes: attributes,
+                        review_text: review_text,
+                        serving_type: serving_type,
+                        date: date
+                    };
+                    
+                    // Add to reviews array
+                    reviews.push(data);
+                });         
+                
+                if(reviews.length < count && reviews.length < max_review_count){
+                
+                    populate_reviews(base_url + reviews.length);
+                    
+                }
+                else{
+                
+                    reviews = reviews.splice(0, count);
+                    callback(JSON.stringify(reviews));
+                    
+                }
+            }
+            else{
+            
+                callback(JSON.stringify(error));
+                
+            }
+        });
+    };
+    
+    // Start recursion
+    populate_reviews(base_url + start_index);
+    
 }
 
 exports.brewerySearch = function(query, callback) {
@@ -359,31 +364,46 @@ exports.breweryPage = function(url, callback) {
 
             var brewery = [];
 
-            // Beer & brewery name
-            var brewery_name = $('h1').text();
+            // Brewery name & Ratings
+            var brewery_name = $('h1').text(),
+                brewery_rating_score = $('.BAscore_big').text(),
+                brewery_rating_text = $('.ba-score_text').text(),
+                brewery_rating_count = $('.ba-ratings').eq(0).text(),
+                brewery_rating_reviews = $('.ba-reviews').text(),
+                brewery_rating_rAgv = $('.ba-ravg').text(),
+                brewery_rating_pDev = $('.ba-pdev').text();
 
-            // Brewery details
-            var links = $('#baContent table').find('form').parent().find('a'),
-                brewery_state = links.eq(2).text(),
-                brewery_country = links.eq(3).text(),
-                beer_style = links.eq(4).text();
+            // Beers lineup info
+            var split_beers_info = $('table').eq(2).find('td').eq(2).html().split('<br>'),
+                active_beers = split_beers_info[0].replace('\nActive Beers:', '').trim(),
+                beer_ratings = split_beers_info[1].replace('Beer Ratings:', '').trim(),
+                beer_avg = split_beers_info[2].replace('Beer Avg:', '').trim(),
+                taps = split_beers_info[3].replace('Taps:', '').trim(),
+                bottles = split_beers_info[4].replace('Bottles:', '').trim(),
+                cask = split_beers_info[5].replace('Cask:', '').trim(),
+                beer_to_go = split_beers_info[6].replace('Beer-to-Go:', '').trim();
 
-            // Beer Advocate scores
-            var ba_info = $('.BAscore_big').eq(0),
-                ba_score = ba_info.text(),
-                ba_rating = ba_info.next().next().text();
-
-            var beer_stats = $('#baContent table').eq(0).find('td').eq(0).text().split(/:\s/),
-                beer_ratings = beer_stats[2].replace("Beer Avg",""),
-                beer_rating_average = beer_stats[3].replace("Taps","");
+            cask = (cask === 'Y') ? true : false;
+            beer_to_go = (beer_to_go === 'Y') ? true : false;
 
             // Data to return
             var data = {
                 brewery_name: brewery_name,
-                ba_score: ba_score,
-                ba_rating: ba_rating,
-                beer_ratings: beer_ratings,
-                beer_rating_average: beer_rating_average
+                brewery_rating : {
+                    score: brewery_rating_score,
+                    text: brewery_rating_text,
+                    count: brewery_rating_count,
+                    reviews: brewery_rating_reviews,
+                    rAvg: brewery_rating_rAgv,
+                    pDev: brewery_rating_pDev
+                },
+                active_beers : active_beers,
+                beer_ratings : beer_ratings,
+                beer_avg : beer_avg,
+                taps : taps,
+                bottles : bottles,
+                cask : cask,
+                beer_to_go : beer_to_go
             };
 
             // Add to beer array
