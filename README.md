@@ -206,7 +206,7 @@ Example response
 ```
 
 Acknowledgements
-----------------
+================
 
 Beer Advocate API is not associated with the Beer Advocate or it’s magazine. We’re fans. And love what they do.
 
