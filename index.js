@@ -58,7 +58,7 @@ exports.beerSearch = function(query, callback) {
 
             });
 
-            callback(beers);
+            callback(JSON.stringify(beers));
 
         }
 
@@ -135,7 +135,7 @@ exports.beerPage = function(url, callback) {
             // Add to beer array
             beer.push(data);
 
-            callback(beer);
+            callback(JSON.stringify(beer));
 
         }
 
@@ -278,13 +278,13 @@ exports.beerTopReviews = function(beer_url, count, callback) {
 				else{
 				
 					reviews = reviews.splice(0, count);
-					callback(reviews);
+					callback(JSON.stringify(reviews));
 					
 				}
 			}
 			else{
 			
-				callback(error);
+				callback(JSON.stringify(error));
 				
 			}
 		});
@@ -335,7 +335,7 @@ exports.brewerySearch = function(query, callback) {
 
             });
 
-            callback(breweries);
+            callback(JSON.stringify(breweries));
 
         }
 
@@ -389,7 +389,7 @@ exports.breweryPage = function(url, callback) {
             // Add to beer array
             brewery.push(data);
 
-            callback(brewery);
+            callback(JSON.stringify(brewery));
 
         }
 
