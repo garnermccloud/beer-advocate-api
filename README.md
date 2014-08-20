@@ -168,8 +168,7 @@ Example response
         "brewery_location": "Missoula, Montana"
     }
 ]
-``
-
+```
 
 ### Brewery page
 
