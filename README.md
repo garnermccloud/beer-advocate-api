@@ -138,7 +138,7 @@ Example response
             "feel": "3.5",
             "overall": "4"
         },
-        "review_text": "Very fresh and good can obtained by John. Citrus hop aroma, yet well tamed. Cloudy orange and lacey. A big IBU and yet a very good ornage, tangerine, grapefruit taste and drinkability. A good examle of a pale that used tobe called an IPA(if not a DIPA by some) .Recommended.",
+        "review_text": "Sample review here.",
         "serving_type": "can",
         "date": "11-28-2012 04:40:39"
     }
