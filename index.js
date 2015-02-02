@@ -92,7 +92,7 @@ exports.beerPage = function(url, callback) {
                 beer_abv = beer_abv_chunk.substr(beer_abv_chunk.length - 6).trimLeft() + "%";
 
             // Brewery details
-            var links = $('#baContent table').find('form').parent().find('a'),
+            var links = $('#baContent table').eq(1).find('tr').eq(2).find('td').find('a'),
                 brewery_state = links.eq(2).text(),
                 brewery_country = links.eq(3).text(),
                 beer_style = links.eq(4).text();
@@ -220,7 +220,7 @@ exports.beerTopReviews = function(beer_url, count, callback) {
                     });
                     
                     // Rating attributes
-                    var attribute_split = text_nodes[2].data.split('|');
+                    var attribute_split = li.children('.muted').eq(0).text().split('|');
 
                     if(attribute_split.length == 5){
                     
@@ -238,13 +238,7 @@ exports.beerTopReviews = function(beer_url, count, callback) {
                         attributes = null;
 
                     }
-                        
-                    // Serving type
-                    var serving_type = text_nodes[text_nodes.length-2].data.split(':')[1];
-                    if(serving_type){
-                        serving_type = serving_type.trim();
-                    }
-                    
+
                     // Date
                     var date = text_nodes[text_nodes.length-1].data.replace('&nbsp|&nbsp;',''),
                         
@@ -267,7 +261,6 @@ exports.beerTopReviews = function(beer_url, count, callback) {
                         rating_max: rating_max,
                         attributes: attributes,
                         review_text: review_text,
-                        serving_type: serving_type,
                         date: date
                     };
                     
@@ -365,23 +358,25 @@ exports.breweryPage = function(url, callback) {
             var brewery = [];
 
             // Brewery name & Ratings
+            var split_info_1 = $('table').eq(2).find('td').eq(1);
             var brewery_name = $('h1').text(),
-                brewery_rating_score = $('.BAscore_big').text(),
-                brewery_rating_text = $('.ba-score_text').text(),
+                brewery_rating_score = split_info_1.find('a').eq(0).text().replace('Place Score:', '').trim(),
                 brewery_rating_count = $('.ba-ratings').eq(0).text(),
                 brewery_rating_reviews = $('.ba-reviews').text(),
                 brewery_rating_rAgv = $('.ba-ravg').text(),
                 brewery_rating_pDev = $('.ba-pdev').text();
 
             // Beers lineup info
-            var split_beers_info = $('table').eq(2).find('td').eq(2).html().split('<br>'),
-                active_beers = split_beers_info[0].replace('\nActive Beers:', '').trim(),
-                beer_ratings = split_beers_info[1].replace('Beer Ratings:', '').trim(),
-                beer_avg = split_beers_info[2].replace('Beer Avg:', '').trim(),
-                taps = split_beers_info[3].replace('Taps:', '').trim(),
-                bottles = split_beers_info[4].replace('Bottles:', '').trim(),
-                cask = split_beers_info[5].replace('Cask:', '').trim(),
-                beer_to_go = split_beers_info[6].replace('Beer-to-Go:', '').trim();
+            var split_info_0 = $('table').eq(2).find('td').eq(0).html().split('<br>');
+            var split_info_2 = $('table').eq(2).find('td').eq(2).html().split('<br>');
+
+            var beer_avg = $('.ba-score').eq(0).text(),
+                total_beers = split_info_0[3].replace('Beers', '').trim(),
+                beer_ratings = $('.ba-ratings').eq(0).text(),
+                taps = split_info_2[0].replace('Taps:', '').trim(),
+                bottles = split_info_2[1].replace('Bottles:', '').trim(),
+                cask = split_info_2[1].replace('Cask:', '').trim(),
+                beer_to_go = split_info_2[2].replace('Beer-to-Go:', '').trim();
 
             cask = (cask === 'Y') ? true : false;
             beer_to_go = (beer_to_go === 'Y') ? true : false;
@@ -391,13 +386,12 @@ exports.breweryPage = function(url, callback) {
                 brewery_name: brewery_name,
                 brewery_rating : {
                     score: brewery_rating_score,
-                    text: brewery_rating_text,
                     count: brewery_rating_count,
                     reviews: brewery_rating_reviews,
                     rAvg: brewery_rating_rAgv,
                     pDev: brewery_rating_pDev
                 },
-                active_beers : active_beers,
+                total_beers : total_beers,
                 beer_ratings : beer_ratings,
                 beer_avg : beer_avg,
                 taps : taps,
