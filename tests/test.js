@@ -12,8 +12,8 @@ ba.beerPage("/beer/profile/29223/84343/", function(beer) {
     console.log("========%s=======", "beerPage");
 });
 
-// Get a specific beer's reviews from top reviewers
-// http://beeradvocate.com/beer/profile/29223/84343/?view=beer&sort=topr&start=0
+//Get a specific beer's reviews from top reviewers
+//http://beeradvocate.com/beer/profile/29223/84343/?view=beer&sort=topr&start=0
 ba.beerTopReviews("/beer/profile/29223/84343/", 1, function(reviews) {
     console.log("========%s=======", "beerTopReviews");
     console.log(reviews);
