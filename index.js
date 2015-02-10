@@ -370,13 +370,14 @@ exports.breweryPage = function(url, callback) {
             var split_info_0 = $('table').eq(2).find('td').eq(0).html().split('<br>');
             var split_info_2 = $('table').eq(2).find('td').eq(2).html().split('<br>');
 
+
             var beer_avg = $('.ba-score').eq(0).text(),
-                total_beers = split_info_0[3].replace('Beers', '').trim(),
+                total_beers = split_info_0[3] ? split_info_0[3].replace('Beers', '').trim() : null,
                 beer_ratings = $('.ba-ratings').eq(0).text(),
-                taps = split_info_2[0].replace('Taps:', '').trim(),
-                bottles = split_info_2[1].replace('Bottles:', '').trim(),
-                cask = split_info_2[1].replace('Cask:', '').trim(),
-                beer_to_go = split_info_2[2].replace('Beer-to-Go:', '').trim();
+                taps = split_info_2[0] ? split_info_2[0].replace('Taps:', '').trim() : null,
+                bottles = split_info_2[1] ? split_info_2[1].replace('Bottles:', '').trim() : null,
+                cask = split_info_2[1] ? split_info_2[1].replace('Cask:', '').trim() : null,
+                beer_to_go = split_info_2[2] ? split_info_2[2].replace('Beer-to-Go:', '').trim() : null;
 
             cask = (cask === 'Y') ? true : false;
             beer_to_go = (beer_to_go === 'Y') ? true : false;
