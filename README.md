@@ -51,7 +51,7 @@ rb.beerPage("/beer/dogfish-head-60-minute-ipa/7431/", function(beer) {
 Acknowledgements
 ================
 
-Ratebeer API is not associated with Ratebeer.com  I love everything they've done for beer and making the info available to all of us.
+Ratebeer API is not associated with Ratebeer.com. I love everything they've done for beer and making the info available to all of us.
 
 
 **Ratebeer API** is inspired by the [Beer Advocate API](https://github.com/stursby/beer-advocate-api).  Thank you Charlie Hield for the work you did.  I hope my work with the Ratebeer API can be as beneficial.
