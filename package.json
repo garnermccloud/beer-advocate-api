@@ -1,21 +1,21 @@
 {
-  "name": "beer-advocate-api",
-  "version": "0.0.6",
-  "description": "Unofficial library for working with Beer Advocate data.",
+  "name": "ratebeer-api",
+  "version": "0.0.1",
+  "description": "Unofficial library for working with Ratebeer data.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "beer advocate",
+    "ratebeer",
     "beer",
     "api"
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/stursby/beer-advocate-api.git"
+    "url": "https://github.com/garnermccloud/ratebeer-api.git"
   },
-  "author": "Charlie Hield",
+  "author": "Garner McCloud",
   "license": "MIT",
   "dependencies": {
     "cheerio": "~0.13.0",
