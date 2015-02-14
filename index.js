@@ -31,27 +31,10 @@ exports.beerSearch = function(query, callback) {
                     beer_name = beer.text(),
                     beer_url = beer.attr('href');
 
-                /* Brewery details
-                //var brewery = li.children('a').eq(1),
-                //    brewery_name = brewery.text(),
-                    brewery_url = brewery.attr('href'),
-                    brewery_location = brewery.next().text();
-
-                // Retired?
-                var retired = false;
-                if (beer.prev().text() === "Retired - ") {
-                    var retired = true;
-                }
-		*/
-
                 // Data to return
                 var data = {
                     beer_name: beer_name,
                     beer_url: beer_url,
-                    //brewery_name: brewery_name,
-                    //brewery_location: brewery_location.slice(2),
-                    //brewery_url: brewery_url,
-                    //retired: retired
                 };
                 
                 // Add to beer array
@@ -83,8 +66,9 @@ exports.beerPage = function(url, callback) {
 
             var beer = [];
 
-            // Beer & brewery name
+            // Beer name
             var beer_name = $('h1').text();
+	    // Beer data
 	    var beer_data = cheerio.load($('#container').children('span').eq(0)
 					 .children('table').eq(0).children('tr').eq(1)
 					 .children('td').eq(1).children('div').eq(0)
